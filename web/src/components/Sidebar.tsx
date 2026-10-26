@@ -1,4 +1,4 @@
-import { CloudUpload, ChevronRight, FolderKanban, LoaderCircle, Plus, Sparkles } from 'lucide-react'
+import { ChevronRight, FolderKanban, LoaderCircle, Plus, Sparkles } from 'lucide-react'
 import type { Project } from '../types/project'
 
 type SidebarProps = {
@@ -62,27 +62,6 @@ export function Sidebar({
           ))
         )}
       </nav>
-
-      <div className="sidebar-bottom">
-        <div className="storage-card">
-          <span className="storage-icon">
-            <CloudUpload size={17} />
-          </span>
-          <div>
-            <strong>Image storage</strong>
-            <span>Cloudflare R2</span>
-          </div>
-          <span className="online-dot" title="R2 is used for image storage" />
-        </div>
-        <div className="sidebar-user">
-          <div className="user-avatar">LF</div>
-          <div>
-            <strong>Local workspace</strong>
-            <span>Personal account</span>
-          </div>
-          <span className="user-menu">•••</span>
-        </div>
-      </div>
     </aside>
   )
 }
