@@ -22,8 +22,9 @@ The backend is an early Django project skeleton. Its Django project package is `
 
 ## Configuration and secrets
 
-- Configure runtime settings through environment variables supplied by the shell or deployment environment.
-- Do not add dotenv packages or `.env` loading unless the user explicitly requests it. Do not create or rely on a `.env` file.
+- Local development uses `python-dotenv` to load `api/.env` from `api/config/settings.py`. The `.env` file is gitignored; `.env.example` documents the required variables.
+- Shell and deployment environment variables take precedence over values in `api/.env`.
+- Do not add another environment-file library or change this setup unless the user requests it.
 - Read required settings from `os.environ` in Django settings; parse booleans and comma-separated lists explicitly.
 - Never commit real secrets, credentials, or production configuration. Keep `DEBUG` enabled only for local development.
 

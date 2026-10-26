@@ -3,7 +3,10 @@ name = "api"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
+    "boto3>=1.43.118",
     "django>=6.1.2",
     "djangorestframework>=3.18.3",
     "drf-spectacular>=0.30.0",
+    "pillow>=13.0.0",
+    "python-dotenv>=1.2.4",
 ]

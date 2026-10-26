@@ -10,22 +10,29 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / '.env')
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@=zp5*z96s0!=853^qm)0k8-5rb%o!x!2#3&!7begsf1goosts'
+# Keep this value in the environment or local .env file, never in source control.
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', 'False').strip().lower() in {'1', 'true', 'yes', 'on'}
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+    if host.strip()
+]
 
 
 # Application definition
@@ -53,6 +60,15 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
+
+# Cloudflare R2 uses an S3-compatible API. Values can come from the local .env
+# file, the shell, or the deployment environment.
+R2_ACCOUNT_ID = os.getenv('R2_ACCOUNT_ID', '')
+R2_ACCESS_KEY_ID = os.getenv('R2_ACCESS_KEY_ID', '')
+R2_SECRET_ACCESS_KEY = os.getenv('R2_SECRET_ACCESS_KEY', '')
+R2_BUCKET_NAME = os.getenv('R2_BUCKET_NAME', '')
+R2_UPLOAD_URL_TTL_SECONDS = int(os.getenv('R2_UPLOAD_URL_TTL_SECONDS', '300'))
+MAX_IMAGE_UPLOAD_BYTES = int(os.getenv('MAX_IMAGE_UPLOAD_BYTES', str(10 * 1024 * 1024)))
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

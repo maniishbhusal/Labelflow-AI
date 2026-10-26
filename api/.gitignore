@@ -19,6 +19,7 @@ staticfiles/
 .env
 .env.local
 .env.*
+!.env.example
 secrets.json
 
 # uv project manager specific logs and caches
