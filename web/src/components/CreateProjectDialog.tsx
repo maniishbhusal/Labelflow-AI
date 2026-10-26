@@ -17,18 +17,51 @@ export function CreateProjectDialog({ creating, onClose, onCreate }: CreateProje
   }
 
   return (
-    <div className="modal-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}>
-      <section className="project-modal" role="dialog" aria-modal="true" aria-labelledby="new-project-title">
-        <div className="modal-topline"><span className="modal-icon"><FolderKanban size={19} /></span><button className="icon-button" onClick={onClose} aria-label="Close dialog"><X size={18} /></button></div>
+    <div
+      className="modal-backdrop"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose()
+      }}
+    >
+      <section
+        className="project-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="new-project-title"
+      >
+        <div className="modal-topline">
+          <span className="modal-icon">
+            <FolderKanban size={19} />
+          </span>
+          <button className="icon-button" onClick={onClose} aria-label="Close dialog">
+            <X size={18} />
+          </button>
+        </div>
         <span className="section-kicker">NEW WORKSPACE</span>
         <h2 id="new-project-title">Create a project</h2>
         <p>Give this dataset a clear name. You can upload images right after.</p>
         <form onSubmit={handleSubmit}>
-          <label className="field-label" htmlFor="project-name">Project name</label>
-          <input id="project-name" className="text-input" autoFocus maxLength={255} placeholder="e.g. Street scenes — Kathmandu" value={name} onChange={(event) => setName(event.target.value)} />
+          <label className="field-label" htmlFor="project-name">
+            Project name
+          </label>
+          <input
+            id="project-name"
+            className="text-input"
+            autoFocus
+            maxLength={255}
+            placeholder="e.g. Street scenes — Kathmandu"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+          />
           <div className="modal-actions">
-            <button type="button" className="button button-quiet" onClick={onClose}>Cancel</button>
-            <button type="submit" className="button button-primary" disabled={!name.trim() || creating}>
+            <button type="button" className="button button-quiet" onClick={onClose}>
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="button button-primary"
+              disabled={!name.trim() || creating}
+            >
               {creating ? <LoaderCircle className="spin" size={16} /> : <Plus size={16} />}
               {creating ? 'Creating…' : 'Create project'}
             </button>

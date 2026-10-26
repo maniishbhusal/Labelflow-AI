@@ -27,13 +27,19 @@ export function useProjectImages(projectId: number | null) {
     setLoading(true)
     setError('')
     listProjectImages(projectId)
-      .then((data) => { if (!ignore) setImages(data) })
+      .then((data) => {
+        if (!ignore) setImages(data)
+      })
       .catch((cause: unknown) => {
         if (!ignore) setError(cause instanceof Error ? cause.message : 'Could not load images.')
       })
-      .finally(() => { if (!ignore) setLoading(false) })
+      .finally(() => {
+        if (!ignore) setLoading(false)
+      })
 
-    return () => { ignore = true }
+    return () => {
+      ignore = true
+    }
   }, [projectId])
 
   return { images, loading, error, refresh, clearError: () => setError('') }

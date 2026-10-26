@@ -27,6 +27,7 @@ A person may need to open hundreds of images, draw rectangles around objects, an
 LabelFlow AI aims to reduce this manual work by automatically generating initial annotations.
 
 The application will also help users:
+
 - Keep images and annotations organized.
 - Correct inaccurate or missing labels.
 - Maintain consistent annotation formats.
@@ -37,6 +38,7 @@ The AI will not always be correct. Human review remains an important part of the
 ## 3. Who is it for?
 
 The initial target users are:
+
 - Computer vision students.
 - Developers experimenting with object detection.
 - Researchers preparing image datasets.
@@ -59,17 +61,20 @@ The first version is a portfolio project. Finding paying customers is not a requ
 ## 5. Core features for version 1
 
 ### A. Image upload
+
 - Upload JPG, JPEG, and PNG images.
 - Display uploaded images in a project gallery.
 - Validate file types, file sizes, and image dimensions.
 
 ### B. AI-assisted annotation
+
 - Enter the objects to identify, such as cars or pedestrians.
 - Run inference using WeVisOne-VL.
 - Display detected objects and their bounding boxes.
 - Show the current processing status and any errors.
 
 ### C. Annotation editor
+
 - Display bounding boxes over the original image.
 - Allow users to move and resize boxes.
 - Allow users to change object labels.
@@ -77,11 +82,13 @@ The first version is a portfolio project. Finding paying customers is not a requ
 - Allow users to add missing boxes manually.
 
 ### D. Project and annotation management
+
 - Save images and their annotations.
 - Reopen previously labeled images.
 - Track whether annotations are pending review or completed.
 
 ### E. Dataset export
+
 - Export corrected annotations as JSON.
 - Include image information, labels, and bounding-box coordinates.
 - Document the exported schema.
@@ -90,27 +97,33 @@ The first version is a portfolio project. Finding paying customers is not a requ
 ## 6. Technology stack
 
 **Frontend**
+
 - React
 - TypeScript
 - Tailwind CSS
 
 **Backend**
+
 - Python
 - Django
 - Django REST Framework
 
 **AI**
+
 - Tencent WeVisOne-VL pretrained model
 - PyTorch and the model's required dependencies
 
 **Database**
+
 - PostgreSQL
 
 **Image storage**
+
 - Local storage during development.
 - Object storage when deploying, if needed.
 
 **Deployment**
+
 - Docker for reproducible environments.
 - A suitable GPU environment for model inference.
 - Hosted frontend and backend services.
@@ -137,11 +150,13 @@ These are proposed endpoint designs. Their exact request and response formats wi
 The application will initially need these entities:
 
 **Project**
+
 - ID
 - Name
 - Created date
 
 **Image**
+
 - ID
 - Project ID
 - File location
@@ -150,6 +165,7 @@ The application will initially need these entities:
 - Processing status
 
 **Annotation**
+
 - ID
 - Image ID
 - Object label
@@ -158,6 +174,7 @@ The application will initially need these entities:
 - Review status
 
 **Analysis Job**
+
 - ID
 - Image ID
 - Status
@@ -169,6 +186,7 @@ The database will store image metadata and annotations. Image files can be store
 ## 9. Out of scope for version 1
 
 To keep the project manageable, the first version will not include:
+
 - User subscriptions or payments.
 - Team collaboration and shared workspaces.
 - Model training or fine-tuning.
@@ -204,6 +222,7 @@ Version 1 is complete when:
 ## 12. Portfolio deliverables
 
 The finished project should include:
+
 - A working application or live demo.
 - A public GitHub repository.
 - A clear README with setup instructions.

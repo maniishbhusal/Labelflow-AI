@@ -1,17 +1,32 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   color-scheme: light;
   background: #f7f8fa;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   min-width: 320px;
   min-height: 100%;
   margin: 0;
 }
 
-body { min-height: 100vh; }
-button, input { font: inherit; }
-button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid #7884e8; outline-offset: 2px; }
-::selection { color: #29304b; background: #dfe2ff; }
+body {
+  min-height: 100vh;
+}
+button,
+input {
+  font: inherit;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid #946900;
+  outline-offset: 2px;
+}
+::selection {
+  color: #342700;
+  background: #ffedaa;
+}

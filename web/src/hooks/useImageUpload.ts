@@ -1,5 +1,9 @@
 import { useState } from 'react'
-import { completeImageUpload, createImageUploadIntent, uploadImageToStorage } from '../api/projectImages'
+import {
+  completeImageUpload,
+  createImageUploadIntent,
+  uploadImageToStorage,
+} from '../api/projectImages'
 import type { ImageUploadStage } from '../types/projectImage'
 
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024
@@ -46,7 +50,12 @@ export function useImageUpload(projectId: number, onUploaded: () => Promise<void
 
       currentStage = 'uploading'
       setStage(currentStage)
-      await uploadImageToStorage(intent.upload.url, intent.upload.method, intent.upload.headers, selectedFile)
+      await uploadImageToStorage(
+        intent.upload.url,
+        intent.upload.method,
+        intent.upload.headers,
+        selectedFile,
+      )
 
       currentStage = 'verifying'
       setStage(currentStage)
@@ -55,7 +64,11 @@ export function useImageUpload(projectId: number, onUploaded: () => Promise<void
       setSelectedFile(null)
     } catch (cause) {
       const message = cause instanceof Error ? cause.message : 'The upload could not be completed.'
-      setError(currentStage === 'verifying' ? `${message} The image may still be pending; refresh the project.` : message)
+      setError(
+        currentStage === 'verifying'
+          ? `${message} The image may still be pending; refresh the project.`
+          : message,
+      )
     } finally {
       setStage('idle')
     }

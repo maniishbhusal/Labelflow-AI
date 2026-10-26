@@ -16,16 +16,25 @@ export function createImageUploadIntent(projectId: number, file: File, contentTy
   })
 }
 
-export async function uploadImageToStorage(url: string, method: 'PUT', headers: Record<string, string>, file: File) {
+export async function uploadImageToStorage(
+  url: string,
+  method: 'PUT',
+  headers: Record<string, string>,
+  file: File,
+) {
   let response: Response
   try {
     response = await fetch(url, { method, headers, body: file })
   } catch {
-    throw new Error('Could not upload to R2. Check your bucket CORS rule allows http://localhost:5173, PUT, and Content-Type.')
+    throw new Error(
+      'Could not upload to R2. Check your bucket CORS rule allows http://localhost:5173, PUT, and Content-Type.',
+    )
   }
 
   if (!response.ok) {
-    throw new Error(`R2 rejected the upload (${response.status}). Check the R2 credentials, URL expiry, and Content-Type.`)
+    throw new Error(
+      `R2 rejected the upload (${response.status}). Check the R2 credentials, URL expiry, and Content-Type.`,
+    )
   }
 }
 

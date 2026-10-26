@@ -12,7 +12,8 @@ export async function apiRequest<T>(path: string, options: RequestInit = {}): Pr
   }
 
   const payload: unknown = await response.json().catch(() => null)
-  if (!response.ok) throw new Error(readErrorMessage(payload) || `The API returned ${response.status}.`)
+  if (!response.ok)
+    throw new Error(readErrorMessage(payload) || `The API returned ${response.status}.`)
   return payload as T
 }
 

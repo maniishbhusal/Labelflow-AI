@@ -21,7 +21,9 @@ export function useProjects() {
         if (ignore) return
         setProjects(data)
         setSelectedProjectId((currentId) =>
-          currentId && data.some((project) => project.id === currentId) ? currentId : (data[0]?.id ?? null),
+          currentId && data.some((project) => project.id === currentId)
+            ? currentId
+            : (data[0]?.id ?? null),
         )
       })
       .catch((cause: unknown) => {
@@ -31,7 +33,9 @@ export function useProjects() {
         if (!ignore) setLoading(false)
       })
 
-    return () => { ignore = true }
+    return () => {
+      ignore = true
+    }
   }, [])
 
   async function addProject(name: string) {

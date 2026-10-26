@@ -41,4 +41,10 @@ The backend is an early Django project skeleton. Its Django project package is `
 - Do not add dependencies when the existing stack can handle the task.
 - Do not run tests or other verification commands unless the user asks for verification.
 
-Use `prd.md` file for the project context. 
+Use `prd.md` file for the project context.
+
+## Formatting
+
+- Run `./scripts/format-all.sh` from the repository root to format the whole project. Prettier handles frontend files and docs; Ruff handles Python files.
+- Run `cd api && uv run pre-commit install` once per clone to enable automatic formatting before commits. This installs one repository-wide hook at `.git/hooks/pre-commit`; the hook formats both `web/` and `api/` according to file type.
+- The pre-commit hook only formats staged supported files. If it changes a file, stage the formatted version and retry the commit.

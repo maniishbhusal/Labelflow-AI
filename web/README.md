@@ -20,6 +20,10 @@ npm run dev
 
 Open the local URL printed by Vite (usually `http://localhost:5173`). Vite forwards `/api/` requests to Django at `http://127.0.0.1:8000`, so a separate Django CORS setup is not needed for local API requests.
 
+## Formatting
+
+From the repository root, run `./scripts/format-all.sh` to format the frontend, docs, and backend Python files. The pre-commit hook is repository-wide—it formats staged frontend and backend files based on their extensions. Enable it once per clone with `cd api && uv run pre-commit install`; `uv` runs the hook installer from the environment where `pre-commit` is installed, and Git installs it at the repository's `.git/hooks/pre-commit` path.
+
 ## Image upload setup
 
 The browser asks Django for a short-lived presigned upload URL, sends the image bytes directly to R2, then asks Django to verify the object. For uploads to work:

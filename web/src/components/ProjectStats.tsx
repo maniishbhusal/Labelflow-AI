@@ -9,9 +9,36 @@ export function ProjectStats({ images, loading }: ProjectStatsProps) {
 
   return (
     <section className="stats-row" aria-label="Project summary">
-      <div className="stat-card"><span className="stat-icon stat-icon-indigo"><Images size={18} /></span><div><span className="stat-label">Images in project</span><strong>{loading ? '—' : images.length}</strong></div><span className="stat-footnote">all uploads</span></div>
-      <div className="stat-card"><span className="stat-icon stat-icon-green"><CheckCircle2 size={18} /></span><div><span className="stat-label">Ready to label</span><strong>{loading ? '—' : readyImages}</strong></div><span className="stat-footnote">verified images</span></div>
-      <div className="stat-card"><span className="stat-icon stat-icon-amber"><Clock3 size={18} /></span><div><span className="stat-label">Still processing</span><strong>{loading ? '—' : pendingImages}</strong></div><span className="stat-footnote">pending uploads</span></div>
+      <div className="stat-card">
+        <span className="stat-icon stat-icon-accent">
+          <Images size={18} />
+        </span>
+        <div>
+          <span className="stat-label">Images in project</span>
+          <strong>{loading ? '—' : images.length}</strong>
+        </div>
+        <span className="stat-footnote">all uploads</span>
+      </div>
+      <div className="stat-card">
+        <span className="stat-icon stat-icon-green">
+          <CheckCircle2 size={18} />
+        </span>
+        <div>
+          <span className="stat-label">Ready to label</span>
+          <strong>{loading ? '—' : readyImages}</strong>
+        </div>
+        <span className="stat-footnote">verified images</span>
+      </div>
+      <div className="stat-card">
+        <span className="stat-icon stat-icon-amber">
+          <Clock3 size={18} />
+        </span>
+        <div>
+          <span className="stat-label">Still processing</span>
+          <strong>{loading ? '—' : pendingImages}</strong>
+        </div>
+        <span className="stat-footnote">pending uploads</span>
+      </div>
     </section>
   )
 }

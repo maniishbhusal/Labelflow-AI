@@ -10,3 +10,16 @@ dependencies = [
     "pillow>=13.0.0",
     "python-dotenv>=1.2.4",
 ]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.7.0",
+    "ruff>=0.17.2",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.format]
+quote-style = "preserve"

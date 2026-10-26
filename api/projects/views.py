@@ -143,7 +143,9 @@ class ProjectImageCompleteView(APIView):
                 raise ValidationError({'file': 'Image exceeds the maximum upload size.'})
             if actual_content_type != image.content_type:
                 self._fail_and_remove(client, bucket_name, image)
-                raise ValidationError({'file': 'Uploaded Content-Type did not match the signed type.'})
+                raise ValidationError(
+                    {'file': 'Uploaded Content-Type did not match the signed type.'}
+                )
 
             response = client.get_object(Bucket=bucket_name, Key=image.object_key)
             body = response['Body']
@@ -152,7 +154,10 @@ class ProjectImageCompleteView(APIView):
             finally:
                 body.close()
 
-            if len(image_bytes) != actual_size or len(image_bytes) > settings.MAX_IMAGE_UPLOAD_BYTES:
+            if (
+                len(image_bytes) != actual_size
+                or len(image_bytes) > settings.MAX_IMAGE_UPLOAD_BYTES
+            ):
                 self._fail_and_remove(client, bucket_name, image)
                 raise ValidationError({'file': 'Uploaded image size is invalid.'})
 
@@ -163,7 +168,9 @@ class ProjectImageCompleteView(APIView):
                 raise
             if detected_content_type != image.content_type:
                 self._fail_and_remove(client, bucket_name, image)
-                raise ValidationError({'file': 'File contents do not match the declared image type.'})
+                raise ValidationError(
+                    {'file': 'File contents do not match the declared image type.'}
+                )
 
             image.file_size = actual_size
             image.width = width
@@ -185,7 +192,12 @@ class ProjectImageCompleteView(APIView):
                     image_format = opened_image.format
                     width, height = opened_image.size
                     opened_image.verify()
-        except (UnidentifiedImageError, OSError, Image.DecompressionBombError, Image.DecompressionBombWarning) as exc:
+        except (
+            UnidentifiedImageError,
+            OSError,
+            Image.DecompressionBombError,
+            Image.DecompressionBombWarning,
+        ) as exc:
             raise ValidationError({'file': 'File is not a valid JPEG or PNG image.'}) from exc
 
         content_type_by_format = {'JPEG': 'image/jpeg', 'PNG': 'image/png'}

@@ -37,11 +37,17 @@ function App() {
       <main className="main-content" id="top">
         <Topbar projectName={projects.selectedProject?.name ?? null} />
         <div className="page-wrap">
-          <ProjectHeader project={projects.selectedProject} onNewProject={() => setShowProjectDialog(true)} />
-          <AlertBanner message={projects.error || projectImages.error} onDismiss={() => {
-            projects.clearError()
-            projectImages.clearError()
-          }} />
+          <ProjectHeader
+            project={projects.selectedProject}
+            onNewProject={() => setShowProjectDialog(true)}
+          />
+          <AlertBanner
+            message={projects.error || projectImages.error}
+            onDismiss={() => {
+              projects.clearError()
+              projectImages.clearError()
+            }}
+          />
 
           {projects.loading && !projects.selectedProject ? (
             <EmptyProjectState loading onCreateProject={() => setShowProjectDialog(true)} />
@@ -59,7 +65,10 @@ function App() {
             </>
           )}
 
-          <footer className="page-footer"><span>LabelFlow AI</span><span>Image labeling, one dataset at a time.</span></footer>
+          <footer className="page-footer">
+            <span>LabelFlow AI</span>
+            <span>Image labeling, one dataset at a time.</span>
+          </footer>
         </div>
       </main>
 

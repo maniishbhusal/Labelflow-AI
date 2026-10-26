@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('projects', '0001_initial'),
     ]
@@ -18,7 +17,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ProjectImage',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name='ID'
+                    ),
+                ),
                 ('object_key', models.CharField(max_length=512, unique=True)),
                 ('original_filename', models.CharField(max_length=255)),
                 ('content_type', models.CharField(max_length=100)),
@@ -26,10 +30,28 @@ class Migration(migrations.Migration):
                 ('file_size', models.PositiveBigIntegerField(blank=True, null=True)),
                 ('width', models.PositiveIntegerField(blank=True, null=True)),
                 ('height', models.PositiveIntegerField(blank=True, null=True)),
-                ('status', models.CharField(choices=[('pending', 'Pending upload'), ('ready', 'Ready'), ('failed', 'Upload failed')], default='pending', max_length=16)),
+                (
+                    'status',
+                    models.CharField(
+                        choices=[
+                            ('pending', 'Pending upload'),
+                            ('ready', 'Ready'),
+                            ('failed', 'Upload failed'),
+                        ],
+                        default='pending',
+                        max_length=16,
+                    ),
+                ),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('uploaded_at', models.DateTimeField(blank=True, null=True)),
-                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='projects.project')),
+                (
+                    'project',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='images',
+                        to='projects.project',
+                    ),
+                ),
             ],
             options={
                 'ordering': ('-created_at', '-id'),

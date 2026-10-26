@@ -11,7 +11,9 @@ export function AlertBanner({ message, onDismiss }: AlertBannerProps) {
     <div className="alert alert-error" role="alert">
       <CircleAlert size={18} />
       <span>{message}</span>
-      <button className="alert-close" onClick={onDismiss} aria-label="Dismiss error"><X size={16} /></button>
+      <button className="alert-close" onClick={onDismiss} aria-label="Dismiss error">
+        <X size={16} />
+      </button>
     </div>
   )
 }
