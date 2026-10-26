@@ -10,6 +10,7 @@ def get_r2_client():
         'R2_ACCESS_KEY_ID': settings.R2_ACCESS_KEY_ID,
         'R2_SECRET_ACCESS_KEY': settings.R2_SECRET_ACCESS_KEY,
         'R2_BUCKET_NAME': settings.R2_BUCKET_NAME,
+        'R2_ENDPOINT_URL': settings.R2_ENDPOINT_URL,
     }
     missing = [name for name, value in required.items() if not value]
     if missing:
@@ -19,7 +20,7 @@ def get_r2_client():
 
     client = boto3.client(
         's3',
-        endpoint_url=f"https://{settings.R2_ACCOUNT_ID}.r2.cloudflarestorage.com",
+        endpoint_url=settings.R2_ENDPOINT_URL,
         region_name='auto',
         aws_access_key_id=settings.R2_ACCESS_KEY_ID,
         aws_secret_access_key=settings.R2_SECRET_ACCESS_KEY,

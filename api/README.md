@@ -16,12 +16,14 @@ R2_ACCOUNT_ID=your-cloudflare-account-id
 R2_ACCESS_KEY_ID=your-r2-access-key-id
 R2_SECRET_ACCESS_KEY=your-r2-secret-access-key
 R2_BUCKET_NAME=your-private-bucket-name
+# Copy this exact value from the bucket's S3 API field in Cloudflare. EU buckets include `.eu.`.
+R2_ENDPOINT_URL=https://your-cloudflare-account-id.eu.r2.cloudflarestorage.com
 R2_UPLOAD_URL_TTL_SECONDS=300
 R2_READ_URL_TTL_SECONDS=900
 MAX_IMAGE_UPLOAD_BYTES=10485760
 ```
 
-The R2 API token should have Object Read & Write access scoped to this bucket. The API uses the credentials server-side and never returns them to the browser.
+The R2 API token should have Object Read & Write access scoped to this bucket. The API uses the credentials server-side and never returns them to the browser. `R2_ENDPOINT_URL` must match the bucket's jurisdiction: an EU bucket requires the `.eu.r2.cloudflarestorage.com` endpoint.
 
 The default upload URL expires after five minutes and images are limited to 10 MiB. The completion endpoint checks the actual object size and verifies the JPEG/PNG bytes and dimensions before marking the record `ready`.
 

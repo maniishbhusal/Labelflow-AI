@@ -66,6 +66,12 @@ R2_ACCOUNT_ID = os.getenv('R2_ACCOUNT_ID', '')
 R2_ACCESS_KEY_ID = os.getenv('R2_ACCESS_KEY_ID', '')
 R2_SECRET_ACCESS_KEY = os.getenv('R2_SECRET_ACCESS_KEY', '')
 R2_BUCKET_NAME = os.getenv('R2_BUCKET_NAME', '')
+# Use the exact S3 API endpoint shown for the bucket in Cloudflare. Jurisdictional
+# buckets require an endpoint containing their jurisdiction, for example `.eu.`.
+R2_ENDPOINT_URL = os.getenv(
+    'R2_ENDPOINT_URL',
+    f'https://{R2_ACCOUNT_ID}.r2.cloudflarestorage.com' if R2_ACCOUNT_ID else '',
+).rstrip('/')
 R2_UPLOAD_URL_TTL_SECONDS = int(os.getenv('R2_UPLOAD_URL_TTL_SECONDS', '300'))
 R2_READ_URL_TTL_SECONDS = int(os.getenv('R2_READ_URL_TTL_SECONDS', '900'))
 MAX_IMAGE_UPLOAD_BYTES = int(os.getenv('MAX_IMAGE_UPLOAD_BYTES', str(10 * 1024 * 1024)))
