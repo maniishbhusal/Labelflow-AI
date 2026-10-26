@@ -30,6 +30,18 @@ The browser asks Django for a short-lived presigned upload URL, sends the image 
 
 The upload form currently accepts JPG/JPEG and PNG images up to 10 MB.
 
+## Frontend code layout
+
+```text
+src/
+  api/          HTTP client and project/image endpoint functions
+  components/   Sidebar, project dialog, upload panel, gallery, and other UI pieces
+  hooks/        Project loading/creation and image loading/upload workflows
+  types/        Project and image API types
+  utils/        Shared formatting helpers
+  App.tsx       Composes the page from hooks and components
+```
+
 ## API base URL
 
 For local development, the Vite proxy is used automatically. If the frontend and API are hosted separately, set `VITE_API_BASE_URL` to the API origin, for example `https://api.example.com`, and configure the API and R2 bucket CORS policies for the deployed frontend origin.
