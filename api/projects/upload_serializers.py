@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.conf import settings
 
 from .models import ProjectImage
+from .storage import create_download_url
 
 
 class ImageUploadIntentSerializer(serializers.Serializer):
@@ -24,6 +25,8 @@ class ImageUploadIntentSerializer(serializers.Serializer):
 
 
 class ProjectImageSerializer(serializers.ModelSerializer):
+    download_url = serializers.SerializerMethodField()
+
     class Meta:
         model = ProjectImage
         fields = (
@@ -34,10 +37,16 @@ class ProjectImageSerializer(serializers.ModelSerializer):
             'width',
             'height',
             'status',
+            'download_url',
             'created_at',
             'uploaded_at',
         )
         read_only_fields = fields
+
+    def get_download_url(self, image):
+        if image.status != ProjectImage.Status.READY:
+            return None
+        return create_download_url(object_key=image.object_key)
 
 
 class UploadDetailsSerializer(serializers.Serializer):

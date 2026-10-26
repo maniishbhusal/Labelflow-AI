@@ -1,75 +1,35 @@
-# React + TypeScript + Vite
+# LabelFlow AI frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend is a React, TypeScript, and Vite app for creating projects and uploading JPG/PNG images to a project's private Cloudflare R2 storage.
 
-Currently, two official plugins are available:
+## Run locally
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Start Django in one terminal:
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+cd api
+uv run python manage.py runserver
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Start Vite in another terminal:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+cd web
+npm run dev
 ```
+
+Open the local URL printed by Vite (usually `http://localhost:5173`). Vite forwards `/api/` requests to Django at `http://127.0.0.1:8000`, so a separate Django CORS setup is not needed for local API requests.
+
+## Image upload setup
+
+The browser asks Django for a short-lived presigned upload URL, sends the image bytes directly to R2, then asks Django to verify the object. For uploads to work:
+
+1. Set the Cloudflare R2 variables in `api/.env` as described in `api/README.md`.
+2. Apply `api/r2-cors.json` to the R2 bucket. The allowed origin must include the exact Vite origin, usually `http://localhost:5173`, and allow `PUT` with the `Content-Type` header.
+3. Keep the bucket private. Django returns short-lived download URLs for ready images so the gallery can display them.
+
+The upload form currently accepts JPG/JPEG and PNG images up to 10 MB.
+
+## API base URL
+
+For local development, the Vite proxy is used automatically. If the frontend and API are hosted separately, set `VITE_API_BASE_URL` to the API origin, for example `https://api.example.com`, and configure the API and R2 bucket CORS policies for the deployed frontend origin.

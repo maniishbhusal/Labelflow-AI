@@ -17,6 +17,7 @@ R2_ACCESS_KEY_ID=your-r2-access-key-id
 R2_SECRET_ACCESS_KEY=your-r2-secret-access-key
 R2_BUCKET_NAME=your-private-bucket-name
 R2_UPLOAD_URL_TTL_SECONDS=300
+R2_READ_URL_TTL_SECONDS=900
 MAX_IMAGE_UPLOAD_BYTES=10485760
 ```
 
@@ -46,4 +47,4 @@ For browser uploads, add the policy in `r2-cors.json` to the bucket's CORS setti
 
 3. After R2 returns success, call `POST /api/projects/{project_id}/images/{image_id}/complete/`. Django checks the object and changes its status from `pending` to `ready`.
 
-`GET /api/projects/{project_id}/images/` lists image records for the project. Swagger docs are available at `/api/docs/` when the backend is running.
+`GET /api/projects/{project_id}/images/` lists image records for the project and includes a short-lived `download_url` for each ready image. Swagger docs are available at `/api/docs/` when the backend is running.

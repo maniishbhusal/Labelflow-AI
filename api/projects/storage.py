@@ -40,3 +40,12 @@ def create_upload_url(*, object_key, content_type):
         ExpiresIn=settings.R2_UPLOAD_URL_TTL_SECONDS,
     )
     return url
+
+
+def create_download_url(*, object_key):
+    client, bucket_name = get_r2_client()
+    return client.generate_presigned_url(
+        'get_object',
+        Params={'Bucket': bucket_name, 'Key': object_key},
+        ExpiresIn=settings.R2_READ_URL_TTL_SECONDS,
+    )
