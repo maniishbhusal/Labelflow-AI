@@ -50,3 +50,17 @@ For browser uploads, add the policy in `r2-cors.json` to the bucket's CORS setti
 3. After R2 returns success, call `POST /api/projects/{project_id}/images/{image_id}/complete/`. Django checks the object and changes its status from `pending` to `ready`.
 
 `GET /api/projects/{project_id}/images/` lists image records for the project and includes a short-lived `download_url` for each ready image. Swagger docs are available at `/api/docs/` when the backend is running.
+
+## Dense Detection jobs
+
+`POST /api/images/{image_id}/annotate/` accepts a label list and creates a `queued` Dense Detection job. The request body is:
+
+```json
+{
+  "labels": ["sofa", "pillow", "lamp"]
+}
+```
+
+The request responds with `202 Accepted` and a job record. Poll `GET /api/jobs/{job_id}/` until its status is `completed` or `failed`. When complete, `GET /api/images/{image_id}/annotations/` returns proposed bounding boxes. Coordinates use the original image's pixels: `x` and `y` mark the top-left corner, and `width` and `height` give the box size.
+
+This backend currently persists and exposes queued jobs, but it does not yet run WeVisOne-VL. The next integration step is a background worker that reads `queued` jobs, performs Dense Detection, creates `Annotation` records, then updates the job status.

@@ -14,7 +14,12 @@ from rest_framework.exceptions import APIException, ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Project, ProjectImage
+from .annotation_serializers import (
+    AnnotationJobSerializer,
+    AnnotationSerializer,
+    DenseDetectionRequestSerializer,
+)
+from .models import AnnotationJob, Project, ProjectImage
 from .serializers import ProjectSerializer
 from .storage import create_upload_url, get_r2_client
 from .upload_serializers import (
@@ -34,6 +39,12 @@ class UploadNotComplete(APIException):
     status_code = status.HTTP_409_CONFLICT
     default_detail = 'The image has not reached storage yet.'
     default_code = 'upload_not_complete'
+
+
+class ImageNotReadyForAnnotation(APIException):
+    status_code = status.HTTP_409_CONFLICT
+    default_detail = 'Only a completed image upload can be submitted for annotation.'
+    default_code = 'image_not_ready'
 
 
 class ProjectImageCollectionView(APIView):
@@ -215,6 +226,66 @@ class ProjectImageCompleteView(APIView):
         except (BotoCoreError, ClientError):
             # The failed row remains available for a later storage cleanup task.
             pass
+
+
+class ImageAnnotationRequestView(APIView):
+    @extend_schema(
+        request=DenseDetectionRequestSerializer,
+        responses={
+            202: AnnotationJobSerializer,
+            400: OpenApiResponse(description='No labels were supplied, or labels were invalid.'),
+            404: OpenApiResponse(description='Image was not found.'),
+            409: OpenApiResponse(description='Image upload is not ready for annotation.'),
+        },
+        tags=['annotations'],
+        summary='Queue a Dense Detection annotation job',
+        description=(
+            'Creates a job for the WeVisOne-VL Dense Detection worker. The worker will use '
+            'the requested labels to propose bounding boxes for the completed image.'
+        ),
+    )
+    def post(self, request, image_id):
+        image = get_object_or_404(ProjectImage, pk=image_id)
+        if image.status != ProjectImage.Status.READY:
+            raise ImageNotReadyForAnnotation()
+
+        serializer = DenseDetectionRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        job = AnnotationJob.objects.create(
+            image=image,
+            target_labels=serializer.validated_data['labels'],
+        )
+        return Response(AnnotationJobSerializer(job).data, status=status.HTTP_202_ACCEPTED)
+
+
+class AnnotationJobDetailView(APIView):
+    @extend_schema(
+        responses={404: OpenApiResponse(description='Annotation job was not found.')},
+        tags=['jobs'],
+        summary='Retrieve annotation job status',
+    )
+    def get(self, request, job_id):
+        job = get_object_or_404(AnnotationJob, pk=job_id)
+        return Response(AnnotationJobSerializer(job).data)
+
+
+class ImageAnnotationCollectionView(APIView):
+    @extend_schema(
+        responses={
+            200: AnnotationSerializer(many=True),
+            404: OpenApiResponse(description='Image was not found.'),
+        },
+        tags=['annotations'],
+        summary='List an image’s saved annotations',
+        description=(
+            'Bounding-box coordinates use original-image pixels: `x` and `y` are the '
+            'top-left corner; `width` and `height` are the box dimensions.'
+        ),
+    )
+    def get(self, request, image_id):
+        image = get_object_or_404(ProjectImage, pk=image_id)
+        annotations = image.annotations.select_related('job')
+        return Response(AnnotationSerializer(annotations, many=True).data)
 
 
 class ProjectListCreateView(APIView):
