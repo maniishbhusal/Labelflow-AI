@@ -1,0 +1,43 @@
+# Repository guide for coding agents
+
+## Project overview
+
+LabelFlow AI is a web application with a React frontend in `web/` and a Django REST Framework backend in `api/`.
+
+```text
+web/   React 19 + TypeScript + Vite + Tailwind CSS
+api/   Django + Django REST Framework, managed with uv
+```
+
+The backend is an early Django project skeleton. Its Django project package is `config/`, its `manage.py` is in `api/`, and DRF is installed. Add domain-specific Django apps under `api/` as needed; register each app in `INSTALLED_APPS` and include its URL routes through `config/urls.py`.
+
+## Backend workflow
+
+- Run backend commands from `api/`.
+- Use `uv` to manage Python and dependencies. Add dependencies with `uv add <package>`; do not use global `pip` installs.
+- Use `uv run <command>` for project commands, for example `uv run python manage.py runserver` and `uv run python manage.py migrate`. Activating `api/.venv` is optional.
+- Keep `pyproject.toml` and `uv.lock` in sync when changing dependencies.
+- The local database is SQLite unless the task explicitly calls for another database. Do not commit the local database file.
+- Implement API endpoints with DRF serializers, views/viewsets, and URL routing. Keep domain logic in the relevant app rather than accumulating it in `config/`.
+
+## Configuration and secrets
+
+- Configure runtime settings through environment variables supplied by the shell or deployment environment.
+- Do not add dotenv packages or `.env` loading unless the user explicitly requests it. Do not create or rely on a `.env` file.
+- Read required settings from `os.environ` in Django settings; parse booleans and comma-separated lists explicitly.
+- Never commit real secrets, credentials, or production configuration. Keep `DEBUG` enabled only for local development.
+
+## Frontend workflow
+
+- The frontend lives in `web/`; use its existing React, TypeScript, Vite, and Tailwind setup.
+- Run frontend commands from `web/` using the scripts in `web/package.json` (for example, `npm run dev` or `npm run build`).
+- Keep frontend API calls aligned with routes and response shapes implemented by the backend.
+
+## General working conventions
+
+- Read the relevant files before changing them and preserve unrelated user changes.
+- Keep changes scoped to the requested feature and follow the existing conventions in the affected area.
+- Do not add dependencies when the existing stack can handle the task.
+- Do not run tests or other verification commands unless the user asks for verification.
+
+Use `prd.md` file for the project context. 
